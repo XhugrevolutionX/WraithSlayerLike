@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Ground
+  - Death
+  - Powershard
+  - Boss
+  - BossAttacks
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1675524207
+    locked: 0
+  - name: Decorations
+    uniqueID: 3858947457
+    locked: 0
+  - name: Spikes
+    uniqueID: 2898725349
+    locked: 0
+  - name: Ground
+    uniqueID: 2270267637
+    locked: 0
+  - name: Boss
+    uniqueID: 2517061523
+    locked: 0
+  - name: Player
+    uniqueID: 3350394331
+    locked: 0
+  m_RenderingLayers:
+  - Default
