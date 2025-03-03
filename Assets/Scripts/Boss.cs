@@ -146,8 +146,6 @@ public class Boss : MonoBehaviour
                 StopCoroutine(_deathCoroutine);
             }
             _deathCoroutine = StartCoroutine(DeathDelay());
-            Time.timeScale = 0;
-            endGameCanvas.enabled = true;
         }
         else
         {
@@ -163,6 +161,8 @@ public class Boss : MonoBehaviour
     {
         yield return new WaitForSeconds(deathDelay);
         Destroy(gameObject);
+        Time.timeScale = 0;
+        endGameCanvas.enabled = true;
     }
     
     private IEnumerator AttackDelay()
