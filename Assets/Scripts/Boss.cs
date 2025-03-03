@@ -14,6 +14,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject attack5;
     [SerializeField] private float attackDelay;
     [SerializeField] private float deathDelay;
+    [SerializeField] private Canvas endGameCanvas;
     private Animator _animator;
     private bool _canAttack;
     private Coroutine _attackDelayCoroutine;
@@ -145,7 +146,8 @@ public class Boss : MonoBehaviour
                 StopCoroutine(_deathCoroutine);
             }
             _deathCoroutine = StartCoroutine(DeathDelay());
-            
+            Time.timeScale = 0;
+            endGameCanvas.enabled = true;
         }
         else
         {

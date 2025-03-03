@@ -8,16 +8,20 @@ public class PlayerInteractions : MonoBehaviour
     [SerializeField] private int power;
     [SerializeField] private float damage = 1;
     [SerializeField] private float iframesDelay = 1;
-    private CapsuleCollider2D _collision;
+    [SerializeField] private AudioSource powerShardsSoundEffect;
+    [SerializeField] private AudioSource bossSoundEffect;
+    [SerializeField] private Canvas endGameCanvas;
+    private bool _canBeHit;
     private bool _isAttackReady;
     private SpriteRenderer _spriteRenderer;
+    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _canBeHit = true;
         _isAttackReady = false;
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        _collision = gameObject.GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -33,6 +37,7 @@ public class PlayerInteractions : MonoBehaviour
             if (power < 3)
             {
                 Destroy(other.gameObject);
+                powerShardsSoundEffect.Play();
                 power++;
                 if (power == 3)
                 {
@@ -40,33 +45,38 @@ public class PlayerInteractions : MonoBehaviour
                 }
             }
         }
-        
-        if (other.gameObject.CompareTag("Death") || other.gameObject.CompareTag("BossAttacks"))
+
+        if (_canBeHit)
         {
-            gameObject.SetActive(false);
-            //Destroy(gameObject);
-            Time.timeScale = 0;
-        }
-        
-        if (other.gameObject.CompareTag("Boss"))
-        {
-            Boss boss = other.gameObject.GetComponent<Boss>();
-            if (_isAttackReady)
-            {
-                boss.Hit(damage);
-                power = 0;
-                _collision.enabled = false;
-                StartCoroutine("Iframes");
-                _isAttackReady = false;
-            }
-            else
+            if (other.gameObject.CompareTag("Death") || other.gameObject.CompareTag("BossAttacks"))
             {
                 gameObject.SetActive(false);
-                //Destroy(gameObject);
                 Time.timeScale = 0;
+                endGameCanvas.enabled = true;
             }
-        }
         
+            if (other.gameObject.CompareTag("Boss"))
+            {
+                Boss boss = other.gameObject.GetComponent<Boss>();
+                if (_isAttackReady)
+                {
+                    boss.Hit(damage);
+                    power = 0;
+                    bossSoundEffect.Play();
+                    _canBeHit= false;
+                    StartCoroutine("Iframes");
+                    _isAttackReady = false;
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                    Time.timeScale = 0;
+                    endGameCanvas.enabled = true;
+                }
+            }
+
+        }
+       
         switch (power)
         {
             case 0:
@@ -87,6 +97,6 @@ public class PlayerInteractions : MonoBehaviour
     private IEnumerator Iframes()
     {
         yield return new WaitForSeconds(iframesDelay);
-        _collision.enabled = true;
+        _canBeHit = true;
     }
 }
