@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -42,6 +43,14 @@ public class PlayerMovement : MonoBehaviour
 
             _dashAnimationCoroutine = StartCoroutine(DashAnimationCooldown());
         }
+    }
+
+    public void Impulse()
+    {
+        Vector2 direction = new Vector2(_rigidbody.linearVelocity.x, _rigidbody.linearVelocity.y);
+        
+        _rigidbody.AddForce(Vector2.right * forceX * 2 * direction.normalized.x, ForceMode2D.Impulse);
+        _rigidbody.AddForce(Vector2.up * forceY * 2 * direction.normalized.y, ForceMode2D.Impulse);
     }
     
     void OnMoveY(InputValue value)

@@ -11,6 +11,7 @@ public class PlayerInteractions : MonoBehaviour
     [SerializeField] private AudioSource powerShardsSoundEffect;
     [SerializeField] private AudioSource bossSoundEffect;
     [SerializeField] private Canvas endGameCanvas;
+    private PlayerMovement _playerMovement;
     private bool _canBeHit;
     private bool _isAttackReady;
     private SpriteRenderer _spriteRenderer;
@@ -21,7 +22,8 @@ public class PlayerInteractions : MonoBehaviour
     {
         _canBeHit = true;
         _isAttackReady = false;
-        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _playerMovement = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -66,6 +68,7 @@ public class PlayerInteractions : MonoBehaviour
                     _canBeHit= false;
                     StartCoroutine("Iframes");
                     _isAttackReady = false;
+                    _playerMovement.Impulse();
                 }
                 else
                 {

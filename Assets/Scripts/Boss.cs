@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -15,13 +16,15 @@ public class Boss : MonoBehaviour
     [SerializeField] private float attackDelay;
     [SerializeField] private float deathDelay;
     [SerializeField] private Canvas endGameCanvas;
+    [SerializeField] private Game game;
     private Animator _animator;
     private bool _canAttack;
     private Coroutine _attackDelayCoroutine;
     private Coroutine _attackCoroutine;    
     private Coroutine _stunCoroutine;
     private Coroutine _deathCoroutine;
-    
+
+    private int _state = 0;
     
     [SerializeField] private float health = 3;
     public bool beenHit = false;
@@ -63,7 +66,20 @@ public class Boss : MonoBehaviour
         
         if (_canAttack)
         {
-            int rnd = Random.Range(0, 5);
+            int rnd = 0;
+            switch (_state)
+            {
+                case 0:
+                    rnd = Random.Range(0, 2); 
+                    break;
+                case 1:
+                    rnd = Random.Range(2, 5);
+                    break;
+                case 2:
+                    rnd = Random.Range(0, 5);
+                    break;
+                    
+            }
             Fire(rnd);
             _animator.SetTrigger("Fire");
         }
@@ -135,7 +151,8 @@ public class Boss : MonoBehaviour
 
     public void Hit(float damage)
     {
-        health -= 1;
+        health -= damage;
+        game.AddScore(1);
         beenHit = true;
         _animator.SetTrigger("Damaged");
         
@@ -149,6 +166,19 @@ public class Boss : MonoBehaviour
         }
         else
         {
+            _state++;
+            switch (_state)
+            {
+                case 0:
+                    attackDelay = 3;
+                    break;
+                case 1:
+                    attackDelay = 2.5f;
+                    break;
+                case 2:
+                    attackDelay = 1.5f;
+                    break;
+            }
             if (_stunCoroutine != null)
             {
                 StopCoroutine(_stunCoroutine);
@@ -161,8 +191,6 @@ public class Boss : MonoBehaviour
     {
         yield return new WaitForSeconds(deathDelay);
         Destroy(gameObject);
-        Time.timeScale = 0;
-        endGameCanvas.enabled = true;
     }
     
     private IEnumerator AttackDelay()
