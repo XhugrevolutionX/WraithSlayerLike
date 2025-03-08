@@ -15,7 +15,6 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject attack5;
     [SerializeField] private float attackDelay;
     [SerializeField] private float deathDelay;
-    [SerializeField] private Canvas endGameCanvas;
     [SerializeField] private Game game;
     private Animator _animator;
     private bool _canAttack;

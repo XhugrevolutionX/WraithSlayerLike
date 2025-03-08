@@ -24,19 +24,23 @@ public class Game : MonoBehaviour
     {
         if (!_player.gameObject.activeInHierarchy)
         {
-            ExitGame();
+            endGameCanvas.enabled = true;
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
         }
     }
 
-    public void ExitGame()
+    public void MainMenu()
     {
-        Application.Quit();
+        SceneManager.LoadScene(0);
     }
 
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1;
     }
 
 

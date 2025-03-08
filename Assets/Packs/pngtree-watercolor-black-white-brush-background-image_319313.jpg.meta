@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d90e41770c1021b48b33e01836749902
+guid: 232ced563d1ee9143af958acae2936d9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5995013051000460117
-    second: panel-transparent-center-026_0
+      213: -5479826978664100336
+    second: pngtree-watercolor-black-white-brush-background-image_319313_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: panel-transparent-center-026_0
+      name: pngtree-watercolor-black-white-brush-background-image_319313_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 96
+        width: 555
+        height: 260
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 55396b06b90923350800000000000000
-      internalID: 5995013051000460117
+      spriteID: 01ecf12756eb3f3b0800000000000000
+      internalID: -5479826978664100336
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      panel-transparent-center-026_0: 5995013051000460117
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

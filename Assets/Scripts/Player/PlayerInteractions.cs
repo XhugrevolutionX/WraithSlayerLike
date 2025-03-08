@@ -10,7 +10,6 @@ public class PlayerInteractions : MonoBehaviour
     [SerializeField] private float iframesDelay = 1;
     [SerializeField] private AudioSource powerShardsSoundEffect;
     [SerializeField] private AudioSource bossSoundEffect;
-    [SerializeField] private Canvas endGameCanvas;
     private PlayerMovement _playerMovement;
     private bool _canBeHit;
     private bool _isAttackReady;
@@ -53,8 +52,6 @@ public class PlayerInteractions : MonoBehaviour
             if (other.gameObject.CompareTag("Death") || other.gameObject.CompareTag("BossAttacks"))
             {
                 gameObject.SetActive(false);
-                Time.timeScale = 0;
-                endGameCanvas.enabled = true;
             }
         
             if (other.gameObject.CompareTag("Boss"))
@@ -73,8 +70,6 @@ public class PlayerInteractions : MonoBehaviour
                 else
                 {
                     gameObject.SetActive(false);
-                    Time.timeScale = 0;
-                    endGameCanvas.enabled = true;
                 }
             }
 
