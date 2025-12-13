@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PowerShards : MonoBehaviour
 {
-    [SerializeField] private Boss boss;
     [SerializeField] private GameObject powerShard;
+    [SerializeField] private BossManager bossManager;
 
     private float _rndX;
     private float _rndY;
@@ -16,7 +16,7 @@ public class PowerShards : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (boss.beenHit)
+        if (bossManager.CurrentBoss.beenHit)
         {
             //Left side 
             _rndX = Random.Range(-18, -9);
@@ -33,11 +33,12 @@ public class PowerShards : MonoBehaviour
             _rndY = Random.Range(-7, 6);
             if (_rndY >= -1)
             {
-                _rndY = _rndY + 2;
+                _rndY += 2;
             }
-            Instantiate(powerShard, new Vector3(_rndX, _rndY, 0), Quaternion.identity);
+            GameObject shard = Instantiate(powerShard, new Vector3(_rndX, _rndY, 0), Quaternion.identity);
+            shard.transform.parent = transform;
 
-            boss.beenHit = false;
+            bossManager.CurrentBoss.beenHit = false;
         }
     }
 

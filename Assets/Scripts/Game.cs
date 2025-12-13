@@ -7,6 +7,7 @@ public class Game : MonoBehaviour
 {
     [SerializeField] private Canvas endGameCanvas;
     [SerializeField] private TextMeshProUGUI scoreText;
+    private Camera _mainCamera;
     private GameObject _player;
     private int _score;
     

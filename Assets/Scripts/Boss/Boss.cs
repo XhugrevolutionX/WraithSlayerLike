@@ -1,53 +1,45 @@
-using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Boss : MonoBehaviour
 {
-    
-    [SerializeField] private GameObject attack1;
-    [SerializeField] private GameObject attack2;
-    [SerializeField] private GameObject attack3;
-    [SerializeField] private GameObject attack4;
-    [SerializeField] private GameObject attack5;
-    [SerializeField] private float attackDelay;
-    [SerializeField] private float deathDelay;
-    [SerializeField] private Game game;
-    private Animator _animator;
-    private bool _canAttack;
-    private Coroutine _attackDelayCoroutine;
-    private Coroutine _attackCoroutine;    
-    private Coroutine _stunCoroutine;
-    private Coroutine _deathCoroutine;
+    private static readonly int IsMovingId = Animator.StringToHash("isMoving");
+    private static readonly int FireId = Animator.StringToHash("Fire");
+    private static readonly int DamagedId = Animator.StringToHash("Damaged");
 
-    private int _state = 0;
+    [SerializeField] protected GameObject attack1;
+    [SerializeField] protected GameObject attack2;
+    [SerializeField] protected GameObject attack3;
+    [SerializeField] protected GameObject attack4;
+    [SerializeField] protected GameObject attack5;
+    [SerializeField] protected float attackDelay;
+    [SerializeField] protected float deathDelay;
+    [SerializeField] protected float health = 3;
+    [SerializeField] protected float moveRangeX = 10;
+    [SerializeField] protected float speedX = 5;
+    [SerializeField] protected float moveRangeY = 1;
+    [SerializeField] protected float speedY = 2;
     
-    [SerializeField] private float health = 3;
-    public bool beenHit = false;
+    protected Game Game;
+    protected Animator Animator;
+    protected bool CanAttack;
+    protected int State;
+    protected Vector2 StartPosition;
+    protected GameObject Target;
+    
+    protected Coroutine AttackDelayCoroutine;
+    protected Coroutine AttackCoroutine;    
+    protected Coroutine StunCoroutine;
+    protected Coroutine DeathCoroutine;
+    
+    public bool beenHit;
     private float _hitStun = 0.5f;
     
-    [SerializeField] private float moveRangeX = 10;
-    [SerializeField] private float speedX = 5;
-    [SerializeField] private float moveRangeY = 1;
-    [SerializeField] private float speedY = 2;
-    private Vector2 _startPosition;
-    
-    private GameObject _target;
-    
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected virtual void Start()
     {
-        _canAttack = false;
-        _attackCoroutine = StartCoroutine(AttackDelay());
-        
-        _startPosition = transform.position;
-        _animator = GetComponent<Animator>();
-        
-        _target = GameObject.FindGameObjectWithTag("Player");
+       
     }
 
     // Update is called once per frame
@@ -56,48 +48,28 @@ public class Boss : MonoBehaviour
         if (!beenHit)
         {
             Move();
-            _animator.SetBool("isMoving", true);
+            Animator.SetBool(IsMovingId, true);
         }
         else
         {
-            _animator.SetBool("isMoving", false);
+            Animator.SetBool(IsMovingId, false);
         }
         
-        if (_canAttack)
+        if (CanAttack)
         {
-            int rnd = 0;
-            switch (_state)
-            {
-                case 0:
-                    rnd = Random.Range(0, 2); 
-                    break;
-                case 1:
-                    rnd = Random.Range(2, 5);
-                    break;
-                case 2:
-                    rnd = Random.Range(0, 5);
-                    break;
-                    
-            }
-            Fire(rnd);
-            _animator.SetTrigger("Fire");
+            Fire(ChooseAttack());
+            Animator.SetTrigger(FireId);
         }
     }
 
-    private void Move()
+    protected virtual int ChooseAttack()
     {
-        if (transform.position.x >= _startPosition.x + moveRangeX || transform.position.x <= _startPosition.x - moveRangeX)
-        {
-            speedX = -speedX;
-        }
+        return 0;
+    }
+
+    protected virtual void Move()
+    {
         
-        if (transform.position.y >= _startPosition.y + moveRangeY || transform.position.y <= _startPosition.y - moveRangeY)
-        {
-            speedY = -speedY;
-        }
-        
-        transform.Translate(Vector2.right * (speedX * Time.deltaTime));
-        transform.Translate(Vector2.up * (speedY * Time.deltaTime));
     }
 
     private void Fire(int attackIdx)
@@ -105,11 +77,13 @@ public class Boss : MonoBehaviour
         switch (attackIdx)
         {
            case 0:
+               //Homing Shot
                Instantiate(attack1, new Vector2(transform.position.x, transform.position.y - 2), Quaternion.identity);
                break; 
            case 1:
+               //Laser Wall
                float dir;
-               if (_target.transform.position.x > transform.position.x)
+               if (Target.transform.position.x > transform.position.x)
                {
                    dir = -1;
                }
@@ -118,87 +92,73 @@ public class Boss : MonoBehaviour
                    dir = 1;
                }
                
-               Instantiate(attack2, new Vector2(_target.transform.position.x + (6 * dir) , _target.transform.position.y), Quaternion.identity);
+               Instantiate(attack2, new Vector2(Target.transform.position.x + (6 * dir) , Target.transform.position.y), Quaternion.identity);
                break;
            case 2:
+               //Exploding attack
                Instantiate(attack3, new Vector2(transform.position.x, transform.position.y - 2), Quaternion.identity);
                break;
            case 3:
-               if (_attackCoroutine != null)
+               //Boulder
+               if (AttackCoroutine != null)
                {
-                   StopCoroutine(_attackCoroutine);
+                   StopCoroutine(AttackCoroutine);
                }
-               _attackCoroutine = StartCoroutine(Boulders());
+               AttackCoroutine = StartCoroutine(Boulders());
                break;
            case 4:
-               if (_attackCoroutine != null)
+               //Fountain
+               if (AttackCoroutine != null)
                {
-                   StopCoroutine(_attackCoroutine);
+                   StopCoroutine(AttackCoroutine);
                }
-               _attackCoroutine = StartCoroutine(Fountain());
+               AttackCoroutine = StartCoroutine(Fountain());
                break;
         }
-        _canAttack = false;
+        CanAttack = false;
 
-        if (_attackDelayCoroutine != null)
+        if (AttackDelayCoroutine != null)
         {
-            StopCoroutine(_attackDelayCoroutine);
+            StopCoroutine(AttackDelayCoroutine);
         }
-        _attackDelayCoroutine = StartCoroutine(AttackDelay());
+        AttackDelayCoroutine = StartCoroutine(AttackDelay());
     }
 
 
-    public void Hit(float damage)
+    public virtual void Hit(float damage)
     {
         health -= damage;
-        game.AddScore(1);
+        Game.AddScore(1);
         beenHit = true;
-        _animator.SetTrigger("Damaged");
+        Animator.SetTrigger(DamagedId);
         
         if (health <= 0)
         {
-            if (_deathCoroutine != null)
+            if (DeathCoroutine != null)
             {
-                StopCoroutine(_deathCoroutine);
+                StopCoroutine(DeathCoroutine);
             }
-            _deathCoroutine = StartCoroutine(DeathDelay());
+            DeathCoroutine = StartCoroutine(DeathDelay());
         }
         else
         {
-            _state++;
-            switch (_state)
-            {
-                case 0:
-                    attackDelay = 3;
-                    break;
-                case 1:
-                    attackDelay = 2.5f;
-                    break;
-                case 2:
-                    attackDelay = 1.5f;
-                    break;
-            }
-            if (_stunCoroutine != null)
-            {
-                StopCoroutine(_stunCoroutine);
-            }
-            _stunCoroutine = StartCoroutine(HitStun());
+            State++;
         }
     }
     
-    private IEnumerator DeathDelay()
+    protected IEnumerator DeathDelay()
     {
         yield return new WaitForSeconds(deathDelay);
         Destroy(gameObject);
     }
     
-    private IEnumerator AttackDelay()
+    protected IEnumerator AttackDelay()
     {
         yield return new WaitForSeconds(attackDelay);
-        _canAttack = true;
+        CanAttack = true;
     }
     
-    private IEnumerator HitStun()
+    protected IEnumerator HitStun()
     {
         yield return new WaitForSeconds(_hitStun);
         beenHit = false;
@@ -208,7 +168,7 @@ public class Boss : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            Instantiate(attack4, new Vector2(_target.transform.position.x + Random.Range(-2, 3), 7), Quaternion.identity);
+            Instantiate(attack4, new Vector2(Target.transform.position.x + Random.Range(-2, 3), 7), Quaternion.identity);
             yield return new WaitForSeconds(0.2f);
         }
     }   
