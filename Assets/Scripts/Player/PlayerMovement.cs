@@ -14,19 +14,23 @@ public class PlayerMovement : MonoBehaviour
     
     private Rigidbody2D _rigidbody;
     private Coroutine _dashAnimationCoroutine;
+
+    public bool IsDashing { get; private set; } = false;
     
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
+    public void Impulse()
+    {
+        Vector2 direction = new Vector2(_rigidbody.linearVelocity.x, _rigidbody.linearVelocity.y);
+        
+        _rigidbody.AddForce(Vector2.right * forceX * 2 * direction.normalized.x, ForceMode2D.Impulse);
+        _rigidbody.AddForce(Vector2.up * forceY * 2 * direction.normalized.y, ForceMode2D.Impulse);
+    }
+    
     void OnMoveX(InputValue value)
     {
         if (MathF.Abs(_rigidbody.linearVelocity.x) <= maxSpeed)
@@ -35,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.gravityScale = 0;
             
             animator.SetFloat("isMovingX", value.Get<float>());
+            IsDashing = true;
 
             if (_dashAnimationCoroutine != null)
             {
@@ -45,14 +50,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Impulse()
-    {
-        Vector2 direction = new Vector2(_rigidbody.linearVelocity.x, _rigidbody.linearVelocity.y);
-        
-        _rigidbody.AddForce(Vector2.right * forceX * 2 * direction.normalized.x, ForceMode2D.Impulse);
-        _rigidbody.AddForce(Vector2.up * forceY * 2 * direction.normalized.y, ForceMode2D.Impulse);
-    }
-    
     void OnMoveY(InputValue value)
     {
         if (MathF.Abs(_rigidbody.linearVelocity.y) <= maxSpeed)
@@ -61,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.gravityScale = 0;
             
             animator.SetFloat("isMovingY", value.Get<float>());
+            IsDashing = true;
 
             if (_dashAnimationCoroutine != null)
             {
@@ -77,5 +75,6 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("isMovingY", 0);
         animator.SetFloat("isMovingX", 0);
         _rigidbody.gravityScale = 1.5f;
+        IsDashing = false;
     }
 }

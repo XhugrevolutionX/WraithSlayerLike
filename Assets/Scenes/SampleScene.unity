@@ -1393,7 +1393,7 @@ MonoBehaviour:
   boss0Prefab: {fileID: 519900632112756071, guid: 71312da284b528e43b4aacb7b9c19528, type: 3}
   boss1Prefab: {fileID: 4632827487798465510, guid: 06e8823805cd55e4188d73314c4e119b, type: 3}
   boss2Prefab: {fileID: 7678416395747704261, guid: 45ca64111875268428558f5e0dc29f93, type: 3}
-  bossToSpawn: 1
+  bossToSpawn: 0
   delay: 2
 --- !u!1 &606095749
 GameObject:

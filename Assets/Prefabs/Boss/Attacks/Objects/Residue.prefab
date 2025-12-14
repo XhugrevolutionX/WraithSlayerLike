@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3622812540047813770}
   - component: {fileID: 4177107535921520429}
   m_Layer: 0
-  m_Name: ExplosionResidue
+  m_Name: Residue
   m_TagString: BossAttacks
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6953057677664210942}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.15, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []

@@ -11,36 +11,26 @@ public class BossManager : MonoBehaviour
     [SerializeField] private float delay = 2f;
 
     public Boss CurrentBoss { get; private set; }
-
+    
     private Coroutine _respawnDelay;
-    private bool _isDead;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         SpawnBoss();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void StartRespawnDelay()
     {
-        if (CurrentBoss)
+        bossToSpawn += 1;
+        if (bossToSpawn > 2)
+            bossToSpawn = 0;
+        
+        if (_respawnDelay != null)
         {
-            _isDead = false;
+            StopCoroutine(_respawnDelay);
         }
-        else
-        {
-            if (_isDead == false)
-            {
-                if (_respawnDelay != null)
-                {
-                    StopCoroutine(_respawnDelay);
-                }
 
-                StartCoroutine("RespawnDelay");
-            }
-        }
+        StartCoroutine("RespawnDelay");
     }
 
     private void SpawnBoss()
@@ -63,13 +53,12 @@ public class BossManager : MonoBehaviour
         }
         boss.transform.parent = transform;
         CurrentBoss = GetComponentInChildren<Boss>();
-        _isDead = false;
+
+        CurrentBoss.deathAction += StartRespawnDelay;
     }
 
     IEnumerator RespawnDelay()
     {
-        _isDead = true;
-        
         yield return new WaitForSeconds(delay);
         SpawnBoss();
     }

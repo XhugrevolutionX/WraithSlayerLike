@@ -16,19 +16,12 @@ public class PlayerInteractions : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _canBeHit = true;
         _isAttackReady = false;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerMovement = GetComponent<PlayerMovement>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -57,7 +50,7 @@ public class PlayerInteractions : MonoBehaviour
             if (other.gameObject.CompareTag("Boss"))
             {
                 Boss boss = other.gameObject.GetComponent<Boss>();
-                if (_isAttackReady)
+                if (_isAttackReady && _playerMovement.IsDashing)
                 {
                     boss.Hit(damage);
                     power = 0;

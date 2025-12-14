@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519900632112756071}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
@@ -145,17 +145,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 519900632112756071}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa2abf97feeba8e4e86a4345d2c98757, type: 3}
+  m_Script: {fileID: 11500000, guid: b5cc19bd98fb2794ab365115c39a0f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack1: {fileID: 5633900356981357204, guid: 6caf4223e1213a348a2cc49e28651cac, type: 3}
-  attack2: {fileID: 8569649804947319238, guid: ffb3aa165f16f1540b42aff41d4bfb31, type: 3}
-  attack3: {fileID: 5225064106486689654, guid: ef5797f859ad155488dbddaefb4e46d2, type: 3}
-  attack4: {fileID: 4919409589794590274, guid: 2cca9d87cab32044698c13bcf2b35d75, type: 3}
-  attack5: {fileID: 6953057677664210942, guid: 34c51b88da10916429217611edc2c6e3, type: 3}
-  attackDelay: 3
-  deathDelay: 0.3
+  phase1Attacks:
+  - {fileID: -1628307207359328658, guid: 6caf4223e1213a348a2cc49e28651cac, type: 3}
+  phase1AttackDelay: 2
+  phase2Attacks:
+  - {fileID: 9151805867096692078, guid: ffb3aa165f16f1540b42aff41d4bfb31, type: 3}
+  phase2AttackDelay: 2
+  phase3Attacks:
+  - {fileID: -1628307207359328658, guid: 6caf4223e1213a348a2cc49e28651cac, type: 3}
+  - {fileID: 9151805867096692078, guid: ffb3aa165f16f1540b42aff41d4bfb31, type: 3}
+  phase3AttackDelay: 1.5
   health: 3
+  deathDelay: 0.3
   moveRangeX: 10
   speedX: 5
   moveRangeY: 1
