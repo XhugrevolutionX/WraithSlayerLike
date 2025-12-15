@@ -7,6 +7,9 @@ public class BossManager : MonoBehaviour
     [SerializeField] private GameObject boss0Prefab;
     [SerializeField] private GameObject boss1Prefab;
     [SerializeField] private GameObject boss2Prefab;
+    
+    public static int SelectedBossIndex = 0;
+    
     [SerializeField] private int bossToSpawn = 0;
     [SerializeField] private float delay = 2f;
 
@@ -16,25 +19,27 @@ public class BossManager : MonoBehaviour
     
     void Start()
     {
+        bossToSpawn = SelectedBossIndex;
+        
         SpawnBoss();
     }
 
     private void StartRespawnDelay()
     {
-        bossToSpawn += 1;
-        if (bossToSpawn > 2)
-            bossToSpawn = 0;
-        
         if (_respawnDelay != null)
         {
             StopCoroutine(_respawnDelay);
         }
 
-        StartCoroutine("RespawnDelay");
+        StartCoroutine(nameof(RespawnDelay));
     }
 
     private void SpawnBoss()
     {
+        // bossToSpawn += 1;
+        // if (bossToSpawn > 2)
+        //     bossToSpawn = 0;
+        
         GameObject boss;
         switch (bossToSpawn)
         {
@@ -52,7 +57,7 @@ public class BossManager : MonoBehaviour
                 break;
         }
         boss.transform.parent = transform;
-        CurrentBoss = GetComponentInChildren<Boss>();
+        CurrentBoss = boss.GetComponent<Boss>();
 
         CurrentBoss.deathAction += StartRespawnDelay;
     }

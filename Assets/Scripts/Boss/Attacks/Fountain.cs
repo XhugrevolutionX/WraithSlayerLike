@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Fountain : BossAttack
 {
-    
     [Header("Settings")]
     [SerializeField] private GameObject residuePrefab;
     [SerializeField] private int count = 20;
@@ -16,11 +15,9 @@ public class Fountain : BossAttack
     
     private IEnumerator SpawnFountain(Transform boss)
     {
-        Vector2 origin = boss.position; 
-
         for (int i = 0; i < count; i++)
         {
-            Instantiate(residuePrefab, origin, Quaternion.identity);
+            Instantiate(residuePrefab, boss.position, Quaternion.identity);
             yield return new WaitForSeconds(interval);
         }
         Destroy(gameObject);

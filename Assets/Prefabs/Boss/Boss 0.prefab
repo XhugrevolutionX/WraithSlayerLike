@@ -153,7 +153,7 @@ MonoBehaviour:
   phase1AttackDelay: 2
   phase2Attacks:
   - {fileID: 9151805867096692078, guid: ffb3aa165f16f1540b42aff41d4bfb31, type: 3}
-  phase2AttackDelay: 2
+  phase2AttackDelay: 2.5
   phase3Attacks:
   - {fileID: -1628307207359328658, guid: 6caf4223e1213a348a2cc49e28651cac, type: 3}
   - {fileID: 9151805867096692078, guid: ffb3aa165f16f1540b42aff41d4bfb31, type: 3}

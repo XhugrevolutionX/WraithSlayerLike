@@ -4,8 +4,28 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     
-    public void StartGame()
+    private static bool _hasInitialized = false; 
+
+    void Start()
     {
+        if (!_hasInitialized)
+        {
+            ApplyDefaultSettings();
+            _hasInitialized = true;
+        }
+    }
+    
+    private void ApplyDefaultSettings()
+    {
+        Screen.SetResolution(1920, 1080, true);
+        Screen.fullScreen = true;
+        QualitySettings.SetQualityLevel(2);
+        AudioListener.volume = 1.0f;
+    }
+    
+    public void StartGame(int bossIndex)
+    {
+        BossManager.SelectedBossIndex = bossIndex;
         SceneManager.LoadScene(2);
     }
     

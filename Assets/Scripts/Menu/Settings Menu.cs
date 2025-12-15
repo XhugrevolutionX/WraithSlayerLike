@@ -5,35 +5,64 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
+using Toggle = UnityEngine.UI.Toggle;
 
 public class SettingsMenu : MonoBehaviour
 {
-    
-    public TMP_Dropdown resolutionDropdown;
-    
-    private Resolution[] _resolutions;
+    [SerializeField] private TMP_Dropdown qualityDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private Toggle fullscreenToggle;
+    [SerializeField] private Slider volumeSlider;
+
+    private static List<Resolution> _resolutions;
+    private static List<string> _resolutionOptions;
     
     void Start()
     {
-        _resolutions = Screen.resolutions;
-        
-        resolutionDropdown.ClearOptions();
-        
-        List<String> options = new List<string>();
+        InitializeSettingsUI();
+    }
+    
+    private void InitializeSettingsUI()
+    {
+        fullscreenToggle.isOn = Screen.fullScreen;
+        volumeSlider.value = AudioListener.volume;
+        qualityDropdown.value = QualitySettings.GetQualityLevel();
 
-        int currentResolutionIndex = 0;
-        for (int i = 0; i < _resolutions.Length; i++)
+        if (_resolutions == null)
         {
-            string option = _resolutions[i].width + " x " + _resolutions[i].height;
-            options.Add(option);
+            _resolutions = new List<Resolution>();
+            _resolutionOptions = new List<string>();
+            
+            Resolution[] allResolutions = Screen.resolutions;
+            HashSet<String> addedOptions = new HashSet<String>();
 
-            if (_resolutions[i].height == Screen.currentResolution.height && _resolutions[i].width == Screen.currentResolution.width)
+            for (int i = 0; i < allResolutions.Length; i++)
             {
-                currentResolutionIndex = i;
+                string optionText = allResolutions[i].width + " x " + allResolutions[i].height;
+
+                if (!addedOptions.Contains(optionText))
+                {
+                    addedOptions.Add(optionText);
+                    _resolutions.Add(allResolutions[i]);
+                    _resolutionOptions.Add(optionText);
+                }
             }
         }
         
-        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.ClearOptions();
+        resolutionDropdown.AddOptions(_resolutionOptions);
+        int currentResolutionIndex = 0;
+        
+        for (int i = 0; i < _resolutions.Count; i++)
+        {
+            if (_resolutions[i].width == Screen.width && _resolutions[i].height == Screen.height)
+            {
+                currentResolutionIndex = i;
+                break;
+            }
+        }
+
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
     }

@@ -3485,7 +3485,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f904cb2c725ccbb47a2b55bc2bc0c5ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  qualityDropdown: {fileID: 1552053653}
   resolutionDropdown: {fileID: 1644713082}
+  fullscreenToggle: {fileID: 209910800}
+  volumeSlider: {fileID: 390882795}
 --- !u!1 &1644713080
 GameObject:
   m_ObjectHideFlags: 0
